@@ -2,7 +2,6 @@
 
 import org.danilopianini.gradle.mavencentral.JavadocJar
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.gradle.internal.os.OperatingSystem
 
 @Suppress("DSL_SCOPE_VIOLATION")
@@ -16,63 +15,15 @@ plugins {
     alias(libs.plugins.npm.publish)
     alias(libs.plugins.publishOnCentral)
     alias(libs.plugins.taskTree)
+    id("com.android.application") version "7.4.1" apply false
+    id("org.jetbrains.kotlin.android") version "1.8.10" apply false
 }
 
-group = "org.danilopianini"
+group = "it.nicolasfarabegoli"
 
 repositories {
     google()
     mavenCentral()
-}
-
-fun KotlinNativeTarget.binarySetup() {
-    compilations["main"].defaultSourceSet.dependsOn(kotlin.sourceSets["nativeMain"])
-    compilations["test"].defaultSourceSet.dependsOn(kotlin.sourceSets["nativeTest"])
-    binaries {
-        sharedLib()
-        staticLib()
-        "main".let {
-            executable { entryPoint = it }
-        }
-    }
-}
-
-fun KotlinMultiplatformExtension.configureDarwinCompatiblePlatforms() {
-    listOf(
-        macosX64(),
-        macosArm64(),
-        iosArm32(),
-        iosArm64(),
-        iosSimulatorArm64(),
-        tvosArm64(),
-        tvosSimulatorArm64(),
-        watchosArm32(),
-        watchosArm64(),
-        watchosSimulatorArm64()
-    ).forEach { it.binarySetup() }
-}
-
-fun KotlinMultiplatformExtension.configureWindowsCompatiblePlatforms() {
-    listOf(
-        mingwX64()
-    ).forEach { it.binarySetup() }
-}
-
-fun KotlinMultiplatformExtension.configureLinuxCompatiblePlatforms() {
-    listOf(
-        linuxX64()
-    ).forEach { it.binarySetup() }
-}
-
-fun KotlinMultiplatformExtension.configureAllPlatforms() {
-    configureLinuxCompatiblePlatforms()
-    configureWindowsCompatiblePlatforms()
-    configureDarwinCompatiblePlatforms()
-    listOf(
-        linuxArm32Hfp(),
-        linuxArm64(),
-        mingwX86()
-    ).forEach { it.binarySetup() }
 }
 
 kotlin {
@@ -112,16 +63,31 @@ kotlin {
         binaries.library()
     }
 
-    val releaseStage: String? by project
+    val nativeSetup: KotlinNativeTarget.() -> Unit = {
+        compilations["main"].defaultSourceSet.dependsOn(kotlin.sourceSets["nativeMain"])
+        compilations["test"].defaultSourceSet.dependsOn(kotlin.sourceSets["nativeTest"])
+        binaries {
+            sharedLib()
+            staticLib()
+        }
+    }
 
-    when (OperatingSystem.current() to releaseStage.toBoolean()) {
-        OperatingSystem.LINUX to false -> configureLinuxCompatiblePlatforms()
-        OperatingSystem.WINDOWS to false -> configureWindowsCompatiblePlatforms()
-        OperatingSystem.MAC_OS to false -> configureDarwinCompatiblePlatforms()
-        OperatingSystem.MAC_OS to true -> configureAllPlatforms()
-        else -> throw GradleException(
-            "To cross-compile for all the platforms, a `macos` runner should be used"
-        )
+    when (OperatingSystem.current()) {
+        OperatingSystem.LINUX -> {
+            linuxX64(nativeSetup)
+            linuxArm64(nativeSetup)
+        }
+        OperatingSystem.WINDOWS -> {
+            mingwX64(nativeSetup)
+        }
+        OperatingSystem.MAC_OS -> {
+            macosX64(nativeSetup)
+            macosArm64(nativeSetup)
+            ios(nativeSetup)
+            watchos(nativeSetup)
+            tvos(nativeSetup)
+        }
+        else -> throw GradleException("Unsupported OS: ${OperatingSystem.current()}")
     }
 
     targets.all {
@@ -152,21 +118,26 @@ signing {
 }
 
 publishOnCentral {
-    projectLongName.set("Template for Kotlin Multiplatform Project")
-    projectDescription.set("A template repository for Kotlin Multiplatform projects")
-    repository("https://maven.pkg.github.com/danysk/${rootProject.name}".toLowerCase()) {
-        user.set("DanySK")
+    projectLongName.set("Crowd estimation using the pulverization")
+    projectDescription.set("Crowd estimation using Android devices and pulverization")
+    repository("https://maven.pkg.github.com/nicolasfara/${rootProject.name}".toLowerCase()) {
+        user.set("nicolasfara")
         password.set(System.getenv("GITHUB_TOKEN"))
     }
     publishing {
         publications {
             withType<MavenPublication> {
                 pom {
+                    scm {
+                        connection.set("git:git@github.com:nicolasfara/pulverization-crowd")
+                        developerConnection.set("git:git@github.com:nicolasfara/pulverization-crowd")
+                        url.set("https://github.com/nicolasfara/pulverization-crowd")
+                    }
                     developers {
                         developer {
-                            name.set("Danilo Pianini")
-                            email.set("danilo.pianini@gmail.com")
-                            url.set("http://www.danilopianini.org/")
+                            name.set("Nicolas Farabegoli")
+                            email.set("nicolas.farabegoli@gmail.com")
+                            url.set("https://nicolasfarabegoli.it")
                         }
                     }
                 }
