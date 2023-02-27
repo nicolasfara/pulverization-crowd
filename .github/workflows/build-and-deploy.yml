@@ -17,8 +17,6 @@ jobs:
       - name: Set condition
         id: require-secrets
         run: |
-          echo "Has secrets: ${{ steps.detect-secrets.outputs.has-secrets }}"
-          echo "Is fork: ${{ github.event.repository.fork }}"
           echo "run-with-secrets=${{ steps.detect-secrets.outputs.has-secrets == 'true' && !github.event.repository.fork }}" >> $GITHUB_OUTPUT
   staging-repo:
     runs-on: ubuntu-22.04
@@ -106,6 +104,9 @@ jobs:
           check-command: true
           deploy-command: >-
             ./gradlew -PstagingRepositoryId=${{ needs.staging-repo.outputs.maven-central-repo-id }} close --parallel
+            if [[ "${{ needs.staging-repo.outputs.will-release }}" == "false" ]]; then
+              ./gradlew -PstagingRepositoryId=${{ needs.staging-repo.outputs.maven-central-repo-id }} drop
+            fi
   release:
     concurrency:
       # Only one release job at a time per branch, as only master releases.
