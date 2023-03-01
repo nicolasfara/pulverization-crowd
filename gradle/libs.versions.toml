@@ -3,7 +3,7 @@ android-plugins = "7.0.0"
 kotest = "5.5.4"
 kotlin = "1.8.10"
 coroutine = "1.6.4"
-pulverization = "0.4.8"
+pulverization = "0.4.10"
 
 [libraries]
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
@@ -38,6 +38,15 @@ kotlin-testing-common = [
     "kotlin-test-common",
     "kotlin-test-annotations-common",
 ]
+coroutines = [
+    "coroutine-core"
+]
+pulverization = [
+    "pulverization-core",
+    "pulverization-platform",
+    "pulverization-rabbitmq",
+    "koin-core"
+]
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -46,6 +55,5 @@ dokka = "org.jetbrains.dokka:1.7.20"
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning-gradle-plugin:1.1.1"
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.25.1"
 multiJvmTesting = "org.danilopianini.multi-jvm-test-plugin:0.4.17"
-npm-publish = "dev.petuska.npm.publish:3.2.1"
 publishOnCentral = "org.danilopianini.publish-on-central:3.3.0"
 taskTree = "com.dorongold.task-tree:2.1.1"

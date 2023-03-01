@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import org.danilopianini.gradle.mavencentral.JavadocJar
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.gradle.internal.os.OperatingSystem
@@ -12,14 +10,13 @@ plugins {
     alias(libs.plugins.gitSemVer)
     alias(libs.plugins.kotlin.qa)
     alias(libs.plugins.multiJvmTesting)
-    alias(libs.plugins.npm.publish)
     alias(libs.plugins.publishOnCentral)
     alias(libs.plugins.taskTree)
-    id("com.android.application") version "7.4.1" apply false
+    id("com.android.application") version "7.4.2" apply false
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
 }
 
-group = "it.nicolasfarabegoli"
+group = "it.nicolasfarabegoli.${rootProject.name}"
 
 repositories {
     google()
@@ -37,7 +34,12 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting { }
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.bundles.pulverization)
+                implementation(libs.bundles.coroutines)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(libs.bundles.kotlin.testing.common)
@@ -72,29 +74,48 @@ kotlin {
         }
     }
 
-    when (OperatingSystem.current()) {
-        OperatingSystem.LINUX -> {
-            linuxX64(nativeSetup)
-            linuxArm64(nativeSetup)
-        }
-        OperatingSystem.WINDOWS -> {
-            mingwX64(nativeSetup)
-        }
-        OperatingSystem.MAC_OS -> {
-            macosX64(nativeSetup)
-            macosArm64(nativeSetup)
-            ios(nativeSetup)
-            watchos(nativeSetup)
-            tvos(nativeSetup)
-        }
-        else -> throw GradleException("Unsupported OS: ${OperatingSystem.current()}")
-    }
+    linuxX64(nativeSetup)
+    // linuxArm64(nativeSetup)
+
+    mingwX64(nativeSetup)
+
+    macosX64(nativeSetup)
+    macosArm64(nativeSetup)
+    ios(nativeSetup)
+    watchos(nativeSetup)
+    tvos(nativeSetup)
 
     targets.all {
         compilations.all {
             kotlinOptions {
                 allWarningsAsErrors = true
             }
+        }
+    }
+
+    // Disable cross compilation
+    val os = OperatingSystem.current()
+    val excludeTargets = when {
+        os.isLinux -> kotlin.targets.filter { "linux" !in it.name }
+        os.isWindows -> kotlin.targets.filter { "mingw" !in it.name }
+        os.isMacOsX -> kotlin.targets.filter { "linux" in it.name || "mingw" in it.name }
+        else -> emptyList()
+    }.mapNotNull { it as? KotlinNativeTarget }
+
+    configure(excludeTargets) {
+        compilations.all {
+            cinterops.all { tasks[interopProcessingTaskName].enabled = false }
+            compileTaskProvider.get().enabled = false
+            tasks[processResourcesTaskName].enabled = false
+        }
+        binaries.all { linkTask.enabled = false }
+
+        mavenPublication {
+            val publicationToDisable = this
+            tasks.withType<AbstractPublishToMaven>()
+                .all { onlyIf { publication != publicationToDisable } }
+            tasks.withType<GenerateModuleMetadata>()
+                .all { onlyIf { publication.get() != publicationToDisable } }
         }
     }
 }
@@ -129,9 +150,9 @@ publishOnCentral {
             withType<MavenPublication> {
                 pom {
                     scm {
-                        connection.set("git:git@github.com:nicolasfara/pulverization-crowd")
-                        developerConnection.set("git:git@github.com:nicolasfara/pulverization-crowd")
-                        url.set("https://github.com/nicolasfara/pulverization-crowd")
+                        connection.set("git:git@github.com:nicolasfara/${rootProject.name}")
+                        developerConnection.set("git:git@github.com:nicolasfara/${rootProject.name}")
+                        url.set("https://github.com/nicolasfara/${rootProject.name}")
                     }
                     developers {
                         developer {
@@ -142,17 +163,6 @@ publishOnCentral {
                     }
                 }
             }
-        }
-    }
-}
-
-npmPublish {
-    registries {
-        register("npmjs") {
-            uri.set("https://registry.npmjs.org")
-            val npmToken: String? by project
-            authToken.set(npmToken)
-            dry.set(npmToken.isNullOrBlank())
         }
     }
 }
