@@ -26,6 +26,7 @@ class EstimatorBehaviour : Behaviour<StateOps, CommunicationPayload, Unit, RGB, 
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 suspend fun estimatorBehaviourLogic(
     behaviour: Behaviour<StateOps, CommunicationPayload, Unit, RGB, Unit>,
     stateRef: StateRef<StateOps>,

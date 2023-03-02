@@ -1,7 +1,8 @@
 package it.nicolasfarabegoli.pulverization.crowd.smartphone
 
 import it.nicolasfarabegoli.pulverization.component.Context
-import it.nicolasfarabegoli.pulverization.core.*
+import it.nicolasfarabegoli.pulverization.core.Behaviour
+import it.nicolasfarabegoli.pulverization.core.BehaviourOutput
 import it.nicolasfarabegoli.pulverization.crowd.common.CommunicationPayload
 import it.nicolasfarabegoli.pulverization.crowd.common.GetCurrentState
 import it.nicolasfarabegoli.pulverization.crowd.common.StateOps
@@ -26,6 +27,7 @@ class SmartphoneBehaviour : Behaviour<StateOps, CommunicationPayload, Neighbours
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 suspend fun smartphoneBehaviourLogic(
     behaviour: Behaviour<StateOps, CommunicationPayload, NeighboursDistances, Unit, Unit>,
     stateRef: StateRef<StateOps>,
