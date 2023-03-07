@@ -14,6 +14,9 @@ import it.nicolasfarabegoli.pulverization.runtime.dsl.pulverizationPlatform
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.runBlocking
 
+/**
+ * TODO.
+ */
 fun main() = runBlocking {
     val platform = pulverizationPlatform(config.getDeviceConfiguration("smartphone-offloaded")!!) {
         behaviourLogic(SmartphoneBehaviour(), ::smartphoneBehaviourLogic)
