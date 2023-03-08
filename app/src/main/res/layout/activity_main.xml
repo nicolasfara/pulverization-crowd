@@ -4,56 +4,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <LinearLayout
-        android:id="@+id/rootContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <EditText
-            android:id="@+id/brokerIp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Platform IP"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/deviceIdText"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Device ID"
-            android:inputType="textPersonName" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <Button
-            android:id="@+id/startButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Start" />
-
-        <TextView
-            android:id="@+id/rssiLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/neighbourRssi"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:keepScreenOn="true"
+    tools:context=".MainActivity" />
