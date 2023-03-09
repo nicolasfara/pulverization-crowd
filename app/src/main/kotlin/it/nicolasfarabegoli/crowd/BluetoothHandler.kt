@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import java.util.*
 
-class BluetoothHandler private constructor(private val context: Context) {
+class BluetoothHandler private constructor(private val context: Context, private val deviceId: String) {
     private val rssiChannel = MutableSharedFlow<Pair<String, Int>>(1)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val btCentralManager by lazy { BluetoothCentralManager(context) }
@@ -61,9 +61,9 @@ class BluetoothHandler private constructor(private val context: Context) {
 
         @JvmStatic
         @Synchronized
-        fun getInstance(context: Context): BluetoothHandler {
+        fun getInstance(context: Context, deviceId: String): BluetoothHandler {
             if (instance == null) {
-                instance = BluetoothHandler(context)
+                instance = BluetoothHandler(context, deviceId)
             }
             return requireNotNull(instance)
         }
@@ -72,7 +72,7 @@ class BluetoothHandler private constructor(private val context: Context) {
     @SuppressLint("MissingPermission")
     fun start() {
         val bleManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        bleManager.adapter.name = "crowd-<N>"
+        bleManager.adapter.name = "crowd-$deviceId"
         phManager = BluetoothPeripheralManager(context, bleManager, bleCallback)
 
         val fakeGattService = BluetoothGattService(HRS_SERVICE_UUID, SERVICE_TYPE_PRIMARY)

@@ -26,4 +26,5 @@ gitHooks {
 }
 
 rootProject.name = "pulverization-crowd"
+include(":common")
 include(":app")

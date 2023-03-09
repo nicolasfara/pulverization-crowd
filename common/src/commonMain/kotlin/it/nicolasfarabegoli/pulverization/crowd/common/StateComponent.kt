@@ -5,10 +5,16 @@ import it.nicolasfarabegoli.pulverization.core.State
 import it.nicolasfarabegoli.pulverization.crowd.smartphone.NeighboursDistances
 import it.nicolasfarabegoli.pulverization.runtime.componentsref.BehaviourRef
 import kotlinx.coroutines.coroutineScope
+import kotlinx.serialization.Serializable
 import org.koin.core.component.inject
 
+@Serializable
 sealed interface StateOps
+
+@Serializable
 object GetCurrentState : StateOps
+
+@Serializable
 data class CurrentState(val distance: NeighboursDistances) : StateOps
 
 class StateComponent : State<StateOps> {

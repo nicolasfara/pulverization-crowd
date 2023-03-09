@@ -8,8 +8,10 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import org.koin.core.component.inject
 
+@Serializable
 data class CommunicationPayload(val deviceId: String, val distances: NeighboursDistances)
 
 class CommunicationComponent : Communication<CommunicationPayload> {

@@ -1,6 +1,6 @@
 [versions]
 android-plugins = "7.0.0"
-kotest = "5.5.5"
+kotest = "5.5.4"
 kotlin = "1.8.10"
 coroutine = "1.6.4"
 pulverization = "0.4.10"
@@ -45,12 +45,14 @@ pulverization = [
     "pulverization-core",
     "pulverization-platform",
     "pulverization-rabbitmq",
-    "koin-core"
+    "koin-core",
+    "serialization-json"
 ]
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotest-multiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 dokka = "org.jetbrains.dokka:1.7.20"
 gitSemVer = "org.danilopianini.git-sensitive-semantic-versioning-gradle-plugin:1.1.4"
 kotlin-qa = "org.danilopianini.gradle-kotlin-qa:0.29.2"

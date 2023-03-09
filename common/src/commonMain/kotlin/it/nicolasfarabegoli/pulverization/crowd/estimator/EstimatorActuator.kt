@@ -4,8 +4,10 @@ import it.nicolasfarabegoli.pulverization.component.Context
 import it.nicolasfarabegoli.pulverization.core.Actuator
 import it.nicolasfarabegoli.pulverization.core.ActuatorsContainer
 import it.nicolasfarabegoli.pulverization.runtime.componentsref.BehaviourRef
+import kotlinx.serialization.Serializable
 import org.koin.core.component.inject
 
+@Serializable
 data class RGB(val red: Double, val green: Double, val blue: Double)
 
 class EstimatorActuator : Actuator<RGB> {
