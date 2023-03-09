@@ -20,7 +20,6 @@ group = "it.nicolasfarabegoli.${rootProject.name}"
 val Provider<PluginDependency>.id get() = get().pluginId
 
 allprojects {
-
     with(rootProject.libs.plugins) {
         apply(plugin = kotlinx.serialization.id)
         apply(plugin = dokka.id)

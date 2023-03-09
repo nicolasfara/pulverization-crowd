@@ -14,31 +14,38 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.core.component.inject
+import kotlin.math.pow
 
-class SmartphoneBehaviour : Behaviour<StateOps, CommunicationPayload, NeighboursDistances, Unit, Unit> {
+class SmartphoneBehaviour : Behaviour<StateOps, CommunicationPayload, NeighboursRssi, Unit, Unit> {
     override val context: Context by inject()
 
     override fun invoke(
         state: StateOps,
         export: List<CommunicationPayload>,
-        sensedValues: NeighboursDistances
+        sensedValues: NeighboursRssi,
     ): BehaviourOutput<StateOps, CommunicationPayload, Unit, Unit> {
-        TODO("Not yet implemented")
+        val distances = sensedValues.mapValues { (_, rssi) ->
+            10.0.pow((-82 - rssi) / (10 * 2.4))
+        }
+        println("Distance: $distances")
+        return BehaviourOutput(state, CommunicationPayload(context.deviceID, distances), Unit, Unit)
     }
 }
 
 @Suppress("UNUSED_PARAMETER")
 suspend fun smartphoneBehaviourLogic(
-    behaviour: Behaviour<StateOps, CommunicationPayload, NeighboursDistances, Unit, Unit>,
+    behaviour: Behaviour<StateOps, CommunicationPayload, NeighboursRssi, Unit, Unit>,
     stateRef: StateRef<StateOps>,
     commRef: CommunicationRef<CommunicationPayload>,
-    sensRef: SensorsRef<NeighboursDistances>,
+    sensRef: SensorsRef<NeighboursRssi>,
     actRef: ActuatorsRef<Unit>,
 ) = coroutineScope {
     var neighboursComm = emptyList<CommunicationPayload>()
     val job = launch {
         commRef.receiveFromComponent().collect { newMessage ->
-            neighboursComm = neighboursComm.filter { it.deviceId != newMessage.deviceId } + newMessage
+            if (newMessage.deviceId != "0") {
+                neighboursComm = neighboursComm.filter { it.deviceId != newMessage.deviceId } + newMessage
+            }
         }
     }
     sensRef.receiveFromComponent().collect { sensors ->

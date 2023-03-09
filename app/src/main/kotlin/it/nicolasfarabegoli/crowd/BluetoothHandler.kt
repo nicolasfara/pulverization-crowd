@@ -10,20 +10,29 @@ import android.bluetooth.le.AdvertiseSettings
 import android.content.Context
 import android.os.ParcelUuid
 import android.util.Log
-import com.welie.blessed.*
-import it.nicolasfarabegoli.pulverization.crowd.smartphone.NeighboursDistances
-import kotlinx.coroutines.*
+import com.welie.blessed.AdvertiseError
+import com.welie.blessed.BluetoothCentralManager
+import com.welie.blessed.BluetoothPeripheralManager
+import com.welie.blessed.BluetoothPeripheralManagerCallback
+import com.welie.blessed.ConnectionState
+import it.nicolasfarabegoli.pulverization.crowd.smartphone.NeighboursRssi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import java.util.*
 
 /**
  * TODO.
  */
 class BluetoothHandler private constructor(private val context: Context, private val deviceId: String) {
-    private val rssiChannel = MutableStateFlow<NeighboursDistances>(emptyMap())
+    private val rssiChannel = MutableStateFlow<NeighboursRssi>(emptyMap())
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val btCentralManager by lazy { BluetoothCentralManager(context) }
     private lateinit var observerJob: Job
@@ -62,7 +71,7 @@ class BluetoothHandler private constructor(private val context: Context, private
         private val advResponse = AdvertiseData.Builder()
             .setIncludeDeviceName(true).build()
 
-        private val regexDeviceName = "^crowd-\\d+\$".toRegex()
+        private val regexDeviceName = "^crowd-(\\d+)\$".toRegex()
 
         /**
          * TODO.
@@ -77,6 +86,9 @@ class BluetoothHandler private constructor(private val context: Context, private
         }
     }
 
+    /**
+     * TODO.
+     */
     @SuppressLint("MissingPermission")
     fun start() {
         val bleManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -117,20 +129,24 @@ class BluetoothHandler private constructor(private val context: Context, private
     /**
      * TODO.
      */
-    fun rssiFlow(): Flow<NeighboursDistances> = rssiChannel.asSharedFlow()
+    fun rssiFlow(): Flow<NeighboursRssi> = rssiChannel.asSharedFlow()
 
     private fun startScanning() {
         btCentralManager.scanForPeripherals(
             { bluetoothPeripheral, scanResult ->
                 if (bluetoothPeripheral.name.matches(regexDeviceName)) {
-                    val (deviceName) = regexDeviceName.find(bluetoothPeripheral.name)!!.destructured
-                    Log.i(TAG, "Found '${deviceName}' with RSSI ${scanResult.rssi}")
-                    scope.launch { rssiChannel.update { m -> m + mapOf(deviceName to scanResult.rssi) } }
+                    regexDeviceName.find(bluetoothPeripheral.name)?.let {
+                        val (deviceName) = it.destructured
+                        Log.i(TAG, "Found '$deviceName' with RSSI ${scanResult.rssi}")
+                        scope.launch {
+                            rssiChannel.update { m -> m + mapOf(deviceName to scanResult.rssi) }
+                        }
+                    } ?: run { Log.w(TAG, "Fail match regex") }
                 }
             },
             {
                 Log.e(TAG, "Fail scan with reason $it")
-            }
+            },
         )
     }
 }

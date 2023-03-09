@@ -1,4 +1,3 @@
-import org.danilopianini.gradle.mavencentral.JavadocJar
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.gradle.internal.os.OperatingSystem
 
@@ -41,6 +40,11 @@ kotlin {
             dependencies {
                 implementation(libs.bundles.kotlin.testing.common)
                 implementation(libs.bundles.kotest.common)
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation(libs.coroutine.reactor)
             }
         }
         val jvmTest by getting {

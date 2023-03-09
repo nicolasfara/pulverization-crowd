@@ -14,10 +14,10 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.inject
 import kotlin.time.Duration.Companion.milliseconds
 
-typealias NeighboursDistances = Map<String, Int>
+typealias NeighboursRssi = Map<String, Int>
 
-class DistanceSensor(private val neighboursDistance: Flow<NeighboursDistances>) : Sensor<NeighboursDistances> {
-    private var currentNeighboursDistances: NeighboursDistances = emptyMap()
+class DistanceSensor(private val neighboursDistance: Flow<NeighboursRssi>) : Sensor<NeighboursRssi> {
+    private var currentNeighboursDistances: NeighboursRssi = emptyMap()
     private val scope = CoroutineScope(SupervisorJob())
     private lateinit var job: Job
 
@@ -33,10 +33,10 @@ class DistanceSensor(private val neighboursDistance: Flow<NeighboursDistances>) 
         job.cancelAndJoin()
     }
 
-    override suspend fun sense(): NeighboursDistances = currentNeighboursDistances
+    override suspend fun sense(): NeighboursRssi = currentNeighboursDistances
 }
 
-class SmartphoneSensorsContainer(private val neighboursDistance: Flow<NeighboursDistances>) : SensorsContainer() {
+class SmartphoneSensorsContainer(private val neighboursDistance: Flow<NeighboursRssi>) : SensorsContainer() {
     override val context: Context by inject()
 
     override suspend fun initialize() {
@@ -46,7 +46,7 @@ class SmartphoneSensorsContainer(private val neighboursDistance: Flow<Neighbours
 
 suspend fun smartphoneSensorLogic(
     sensor: SensorsContainer,
-    behaviourRef: BehaviourRef<NeighboursDistances>,
+    behaviourRef: BehaviourRef<NeighboursRssi>,
 ) {
     while (true) {
         sensor.get<DistanceSensor> {

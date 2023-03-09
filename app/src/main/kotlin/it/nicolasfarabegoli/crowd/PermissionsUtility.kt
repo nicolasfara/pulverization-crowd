@@ -34,9 +34,11 @@ private val Context.requiredPermissions: Array<String>
             arrayOf(
                 Manifest.permission.BLUETOOTH_SCAN,
                 Manifest.permission.BLUETOOTH_CONNECT,
-                Manifest.permission.BLUETOOTH_ADVERTISE
+                Manifest.permission.BLUETOOTH_ADVERTISE,
             )
         } else if (targetSdkVersion >= Build.VERSION_CODES.Q) {
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-        } else arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION)
+        } else {
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
     }

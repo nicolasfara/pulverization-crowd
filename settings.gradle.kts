@@ -3,6 +3,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 
@@ -26,5 +27,6 @@ gitHooks {
 }
 
 rootProject.name = "pulverization-crowd"
+include(":estimator")
 include(":common")
 include(":app")

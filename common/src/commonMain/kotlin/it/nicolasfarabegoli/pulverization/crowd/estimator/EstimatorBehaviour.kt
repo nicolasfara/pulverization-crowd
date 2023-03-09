@@ -20,9 +20,24 @@ class EstimatorBehaviour : Behaviour<StateOps, CommunicationPayload, Unit, RGB, 
     override fun invoke(
         state: StateOps,
         export: List<CommunicationPayload>,
-        sensedValues: Unit
+        sensedValues: Unit,
     ): BehaviourOutput<StateOps, CommunicationPayload, RGB, Unit> {
-        TODO("Not yet implemented")
+        println(export)
+        val distances = export
+            .filter { it.deviceId != "0" }
+            .map { it.distances.values }
+            .flatten()
+        var meanDistance = distances.sum() / distances.size
+        println("Distances: $distances")
+        println("Size: ${distances.size}")
+        println("Mean: $meanDistance")
+        if (meanDistance < 0.5) meanDistance = 0.5
+        if (meanDistance > 5.0) meanDistance = 5.0
+
+        val green = ((meanDistance - 0.5) / 4.5 * 255).toInt()
+        val red = 255 - green
+        println("Green: $green - Red: $red")
+        return BehaviourOutput(state, CommunicationPayload("0", emptyMap()), RGB(red, green, 0), Unit)
     }
 }
 

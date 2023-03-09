@@ -5,9 +5,16 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
-import it.nicolasfarabegoli.pulverization.crowd.common.*
+import it.nicolasfarabegoli.pulverization.crowd.common.CommunicationComponent
+import it.nicolasfarabegoli.pulverization.crowd.common.StateComponent
+import it.nicolasfarabegoli.pulverization.crowd.common.communicationComponentLogic
+import it.nicolasfarabegoli.pulverization.crowd.common.stateComponentLogic
 import it.nicolasfarabegoli.pulverization.crowd.config
-import it.nicolasfarabegoli.pulverization.crowd.smartphone.*
+import it.nicolasfarabegoli.pulverization.crowd.smartphone.NeighboursRssi
+import it.nicolasfarabegoli.pulverization.crowd.smartphone.SmartphoneBehaviour
+import it.nicolasfarabegoli.pulverization.crowd.smartphone.SmartphoneSensorsContainer
+import it.nicolasfarabegoli.pulverization.crowd.smartphone.smartphoneBehaviourLogic
+import it.nicolasfarabegoli.pulverization.crowd.smartphone.smartphoneSensorLogic
 import it.nicolasfarabegoli.pulverization.dsl.getDeviceConfiguration
 import it.nicolasfarabegoli.pulverization.platforms.rabbitmq.RabbitmqCommunicator
 import it.nicolasfarabegoli.pulverization.platforms.rabbitmq.defaultRabbitMQRemotePlace
@@ -16,17 +23,23 @@ import it.nicolasfarabegoli.pulverization.runtime.dsl.PulverizationPlatformScope
 import it.nicolasfarabegoli.pulverization.runtime.dsl.PulverizationPlatformScope.Companion.sensorsLogic
 import it.nicolasfarabegoli.pulverization.runtime.dsl.PulverizationPlatformScope.Companion.stateLogic
 import it.nicolasfarabegoli.pulverization.runtime.dsl.pulverizationPlatform
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 
+/**
+ * TODO.
+ */
 class PulverizationManager(
     private val lifecycle: Lifecycle,
     private val lifeCycleScope: LifecycleCoroutineScope,
     private val platformIp: String,
     private val deviceId: String,
     private val offloadedBehaviour: Boolean,
-    private val rssiFlow: Flow<NeighboursDistances>,
+    private val rssiFlow: Flow<NeighboursRssi>,
 ) : DefaultLifecycleObserver {
 
     private var canRunThePlatform = false
@@ -58,6 +71,9 @@ class PulverizationManager(
         }
     }
 
+    /**
+     * TODO.
+     */
     fun runPlatform() {
         Log.i(TAG, "Setting up the platform")
         canRunThePlatform = true
@@ -74,7 +90,7 @@ class PulverizationManager(
         val platform = pulverizationPlatform(config.getDeviceConfiguration("smartphone")!!) {
             behaviourLogic(SmartphoneBehaviour(), ::smartphoneBehaviourLogic)
             stateLogic(StateComponent(), ::stateComponentLogic)
-            communicationLogic(CommunicationComponent(), ::communicationComponentLogic)
+            communicationLogic(CommunicationComponent(platformIp), ::communicationComponentLogic)
             sensorsLogic(SmartphoneSensorsContainer(rssiFlow), ::smartphoneSensorLogic)
 
             withPlatform { RabbitmqCommunicator(hostname = platformIp) }
@@ -84,7 +100,7 @@ class PulverizationManager(
             }
         }
         val platformOffloaded = pulverizationPlatform(config.getDeviceConfiguration("smartphone-offloaded")!!) {
-            communicationLogic(CommunicationComponent(), ::communicationComponentLogic)
+            communicationLogic(CommunicationComponent(platformIp), ::communicationComponentLogic)
             sensorsLogic(SmartphoneSensorsContainer(rssiFlow), ::smartphoneSensorLogic)
 
             withPlatform { RabbitmqCommunicator(hostname = platformIp) }
@@ -94,12 +110,16 @@ class PulverizationManager(
             }
         }
 
-        if (offloadedBehaviour) {
-            platformOffloaded.start().joinAll()
-            platformOffloaded.stop()
-        } else {
-            platform.start().joinAll()
-            platform.stop()
+        try {
+            if (offloadedBehaviour) {
+                platformOffloaded.start().joinAll()
+                platformOffloaded.stop()
+            } else {
+                platform.start().joinAll()
+                platform.stop()
+            }
+        } catch (ex: IllegalStateException) {
+            Log.e(TAG, "Something went wrong: ${ex.message}")
         }
     }
 }
