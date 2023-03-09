@@ -11,14 +11,19 @@ import android.content.Context
 import android.os.ParcelUuid
 import android.util.Log
 import com.welie.blessed.*
+import it.nicolasfarabegoli.pulverization.crowd.smartphone.NeighboursDistances
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import java.util.*
 
+/**
+ * TODO.
+ */
 class BluetoothHandler private constructor(private val context: Context, private val deviceId: String) {
-    private val rssiChannel = MutableSharedFlow<Pair<String, Int>>(1)
+    private val rssiChannel = MutableStateFlow<NeighboursDistances>(emptyMap())
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val btCentralManager by lazy { BluetoothCentralManager(context) }
     private lateinit var observerJob: Job
@@ -59,6 +64,9 @@ class BluetoothHandler private constructor(private val context: Context, private
 
         private val regexDeviceName = "^crowd-\\d+\$".toRegex()
 
+        /**
+         * TODO.
+         */
         @JvmStatic
         @Synchronized
         fun getInstance(context: Context, deviceId: String): BluetoothHandler {
@@ -98,12 +106,18 @@ class BluetoothHandler private constructor(private val context: Context, private
         startScanning()
     }
 
+    /**
+     * TODO.
+     */
     suspend fun stop() {
         observerJob.cancelAndJoin()
         phManager.stopAdvertising()
     }
 
-    fun rssiFlow(): Flow<Pair<String, Int>> = rssiChannel.asSharedFlow()
+    /**
+     * TODO.
+     */
+    fun rssiFlow(): Flow<NeighboursDistances> = rssiChannel.asSharedFlow()
 
     private fun startScanning() {
         btCentralManager.scanForPeripherals(
@@ -111,7 +125,7 @@ class BluetoothHandler private constructor(private val context: Context, private
                 if (bluetoothPeripheral.name.matches(regexDeviceName)) {
                     val (deviceName) = regexDeviceName.find(bluetoothPeripheral.name)!!.destructured
                     Log.i(TAG, "Found '${deviceName}' with RSSI ${scanResult.rssi}")
-                    scope.launch { rssiChannel.emit(deviceName to scanResult.rssi) }
+                    scope.launch { rssiChannel.update { m -> m + mapOf(deviceName to scanResult.rssi) } }
                 }
             },
             {

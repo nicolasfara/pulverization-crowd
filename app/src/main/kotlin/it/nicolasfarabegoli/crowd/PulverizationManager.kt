@@ -17,6 +17,7 @@ import it.nicolasfarabegoli.pulverization.runtime.dsl.PulverizationPlatformScope
 import it.nicolasfarabegoli.pulverization.runtime.dsl.PulverizationPlatformScope.Companion.stateLogic
 import it.nicolasfarabegoli.pulverization.runtime.dsl.pulverizationPlatform
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.joinAll
 
 class PulverizationManager(
@@ -25,6 +26,7 @@ class PulverizationManager(
     private val platformIp: String,
     private val deviceId: String,
     private val offloadedBehaviour: Boolean,
+    private val rssiFlow: Flow<NeighboursDistances>,
 ) : DefaultLifecycleObserver {
 
     private var canRunThePlatform = false
@@ -73,9 +75,9 @@ class PulverizationManager(
             behaviourLogic(SmartphoneBehaviour(), ::smartphoneBehaviourLogic)
             stateLogic(StateComponent(), ::stateComponentLogic)
             communicationLogic(CommunicationComponent(), ::communicationComponentLogic)
-            sensorsLogic(SmartphoneSensorsContainer(), ::smartphoneSensorLogic)
+            sensorsLogic(SmartphoneSensorsContainer(rssiFlow), ::smartphoneSensorLogic)
 
-            withPlatform { RabbitmqCommunicator() }
+            withPlatform { RabbitmqCommunicator(hostname = platformIp) }
             withRemotePlace { defaultRabbitMQRemotePlace() }
             withContext {
                 deviceID(deviceId)
@@ -83,9 +85,9 @@ class PulverizationManager(
         }
         val platformOffloaded = pulverizationPlatform(config.getDeviceConfiguration("smartphone-offloaded")!!) {
             communicationLogic(CommunicationComponent(), ::communicationComponentLogic)
-            sensorsLogic(SmartphoneSensorsContainer(), ::smartphoneSensorLogic)
+            sensorsLogic(SmartphoneSensorsContainer(rssiFlow), ::smartphoneSensorLogic)
 
-            withPlatform { RabbitmqCommunicator() }
+            withPlatform { RabbitmqCommunicator(hostname = platformIp) }
             withRemotePlace { defaultRabbitMQRemotePlace() }
             withContext {
                 deviceID(deviceId)

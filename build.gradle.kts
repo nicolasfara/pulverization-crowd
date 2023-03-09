@@ -1,6 +1,4 @@
 import org.danilopianini.gradle.mavencentral.JavadocJar
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.gradle.internal.os.OperatingSystem
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {

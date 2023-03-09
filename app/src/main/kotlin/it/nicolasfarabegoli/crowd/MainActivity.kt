@@ -14,7 +14,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.map
 
+/**
+ * TODO.
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var btHandler: BluetoothHandler
@@ -84,7 +89,8 @@ class MainActivity : AppCompatActivity() {
                 lifecycleScope,
                 ipText.text.toString(),
                 deviceIdText.text.toString(),
-                offloadToggle.isChecked
+                offloadToggle.isChecked,
+                btHandler.rssiFlow(),
             )
             lifecycle.addObserver(pulverizationManager)
             pulverizationManager.runPlatform()
