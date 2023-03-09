@@ -25,7 +25,7 @@ class SmartphoneBehaviour : Behaviour<StateOps, CommunicationPayload, Neighbours
         sensedValues: NeighboursRssi,
     ): BehaviourOutput<StateOps, CommunicationPayload, Unit, Unit> {
         val distances = sensedValues.mapValues { (_, rssi) ->
-            10.0.pow((-82 - rssi) / (10 * 2.4))
+            10.0.pow((-64 - rssi) / (10 * 2.4))
         }
         println("Distance: $distances")
         return BehaviourOutput(state, CommunicationPayload(context.deviceID, distances), Unit, Unit)
