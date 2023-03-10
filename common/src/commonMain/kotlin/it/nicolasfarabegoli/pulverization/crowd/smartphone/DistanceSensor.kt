@@ -17,14 +17,22 @@ import kotlin.time.Duration.Companion.milliseconds
 typealias NeighboursRssi = Map<String, Int>
 
 class DistanceSensor(private val neighboursDistance: Flow<NeighboursRssi>) : Sensor<NeighboursRssi> {
-    private var currentNeighboursDistances: NeighboursRssi = emptyMap()
+    private var filterMap = mapOf<String, MovingAverage<Int>>()
     private val scope = CoroutineScope(SupervisorJob())
     private lateinit var job: Job
+
+    companion object {
+        private const val PERIOD = 5
+    }
 
     override suspend fun initialize() {
         job = scope.launch {
             neighboursDistance.collect {
-                currentNeighboursDistances = currentNeighboursDistances + it
+                it.forEach { (k, v) ->
+                    filterMap[k]?.add(v) ?: run {
+                        filterMap = filterMap + (k to MovingAverage<Int>(PERIOD).apply { add(v) })
+                    }
+                }
             }
         }
     }
@@ -33,7 +41,7 @@ class DistanceSensor(private val neighboursDistance: Flow<NeighboursRssi>) : Sen
         job.cancelAndJoin()
     }
 
-    override suspend fun sense(): NeighboursRssi = currentNeighboursDistances
+    override suspend fun sense(): NeighboursRssi = filterMap.mapValues { (_, v) -> v.mean().toInt() }
 }
 
 class SmartphoneSensorsContainer(private val neighboursDistance: Flow<NeighboursRssi>) : SensorsContainer() {

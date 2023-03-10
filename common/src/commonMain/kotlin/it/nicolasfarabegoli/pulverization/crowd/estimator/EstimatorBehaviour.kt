@@ -22,21 +22,21 @@ class EstimatorBehaviour : Behaviour<StateOps, CommunicationPayload, Unit, RGB, 
         export: List<CommunicationPayload>,
         sensedValues: Unit,
     ): BehaviourOutput<StateOps, CommunicationPayload, RGB, Unit> {
-        println(export)
+//        println(export)
         val distances = export
             .filter { it.deviceId != "0" }
             .map { it.distances.values }
             .flatten()
         var meanDistance = distances.sum() / distances.size
-        println("Distances: $distances")
-        println("Size: ${distances.size}")
-        println("Mean: $meanDistance")
+//        println("Distances: $distances")
+//        println("Size: ${distances.size}")
+//        println("Mean: $meanDistance")
         if (meanDistance < 0.5) meanDistance = 0.5
         if (meanDistance > 3.0) meanDistance = 3.0
 
         val green = ((meanDistance - 0.5) / 2.5 * 255).toInt()
         val red = 255 - green
-        println("Green: $green - Red: $red")
+//        println("Green: $green - Red: $red")
         return BehaviourOutput(state, CommunicationPayload("0", emptyMap()), RGB(red, green, 0), Unit)
     }
 }

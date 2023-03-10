@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.UUID
 
 /**
  * TODO.
@@ -137,7 +137,7 @@ class BluetoothHandler private constructor(private val context: Context, private
                 if (bluetoothPeripheral.name.matches(regexDeviceName)) {
                     regexDeviceName.find(bluetoothPeripheral.name)?.let {
                         val (deviceName) = it.destructured
-                        Log.i(TAG, "Found '$deviceName' with RSSI ${scanResult.rssi}")
+                        // Log.i(TAG, "Found '$deviceName' with RSSI ${scanResult.rssi}")
                         scope.launch {
                             rssiChannel.update { m -> m + mapOf(deviceName to scanResult.rssi) }
                         }

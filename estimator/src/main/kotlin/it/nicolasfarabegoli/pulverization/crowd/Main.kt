@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,7 @@ import kotlinx.coroutines.launch
  */
 fun main() = application {
     var color by remember { mutableStateOf(Color.Red) }
+    val agvDistances by remember { mutableStateOf(0.0) }
     val rgbFlow = MutableSharedFlow<RGB>()
     val coroutineScope = rememberCoroutineScope()
 
@@ -74,7 +76,7 @@ fun main() = application {
     ) {
         MaterialTheme {
             Column(Modifier.background(color).fillMaxSize(), Arrangement.spacedBy(5.dp)) {
-                Text("Dio")
+                Text(agvDistances.toString(), Modifier.align(Alignment.CenterHorizontally))
             }
         }
     }
