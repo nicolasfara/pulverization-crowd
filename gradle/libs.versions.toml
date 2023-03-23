@@ -3,7 +3,7 @@ android-plugins = "7.0.0"
 kotest = "5.5.4"
 kotlin = "1.8.10"
 coroutine = "1.6.4"
-pulverization = "0.4.11"
+pulverization = "0.4.13"
 
 [libraries]
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
