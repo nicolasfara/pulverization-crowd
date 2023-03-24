@@ -15,11 +15,12 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
 }
 
-group = "it.nicolasfarabegoli.${rootProject.name}"
-
 val Provider<PluginDependency>.id get() = get().pluginId
 
 allprojects {
+
+    group = "it.nicolasfarabegoli.${rootProject.name}"
+
     with(rootProject.libs.plugins) {
         apply(plugin = kotlinx.serialization.id)
         apply(plugin = dokka.id)
