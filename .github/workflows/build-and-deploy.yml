@@ -65,6 +65,7 @@ jobs:
           echo $REPO_IDS >> $GITHUB_OUTPUT
   build:
     needs:
+      - check-secrets
       - staging-repo
     if: ${{ always() && !contains(needs.staging-repo.result, 'failure') }}
     strategy:
@@ -91,7 +92,9 @@ jobs:
           signing-key: ${{ secrets.SIGNING_KEY }}
           signing-password: ${{ secrets.SIGNING_PASSWORD }}
   close-staging-repos:
-    needs: [ staging-repo, build ]
+    needs:
+      - staging-repo
+      - build
     runs-on: ubuntu-22.04
     concurrency:
       group: close-staging-repos
@@ -109,15 +112,17 @@ jobs:
           check-command: true
           deploy-command: |
             ./gradlew -PstagingRepositoryId=${{ needs.staging-repo.outputs.maven-central-repo-id }} close --parallel
-#            if [[ "${{ needs.staging-repo.outputs.will-release }}" == "false" ]]; then
-#              ./gradlew -PstagingRepositoryId=${{ needs.staging-repo.outputs.maven-central-repo-id }} drop
-#            fi
+            if [[ "${{ needs.staging-repo.outputs.will-release }}" == "false" ]]; then
+              ./gradlew -PstagingRepositoryId=${{ needs.staging-repo.outputs.maven-central-repo-id }} drop
+            fi
   release:
     concurrency:
       # Only one release job at a time per branch, as only master releases.
       # Strictly sequential.
       group: release-${{ github.event.number || github.ref }}
     needs:
+      - check-secrets
+      - staging-repo
       - build
       - close-staging-repos
     runs-on: ubuntu-22.04
