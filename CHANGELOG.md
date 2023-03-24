@@ -1,3 +1,72 @@
+## 1.0.0 (2023-03-24)
+
+
+### Style improvements
+
+* add newline ([cfe0996](https://github.com/nicolasfara/pulverization-crowd/commit/cfe09964f355b7f1fe5a27eb42ac90c821bc46f7))
+* address detekt issues ([e49cf37](https://github.com/nicolasfara/pulverization-crowd/commit/e49cf37b911887ad17e6d1db149bd2b7cd0e38a2))
+* avoid wildcard import ([f29a75a](https://github.com/nicolasfara/pulverization-crowd/commit/f29a75ac8a26bc9a32b14e6e148f6f09e297dc50))
+
+
+### Dependency updates
+
+* **core-deps:** update plugin dokka to v1.8.10 ([da466a2](https://github.com/nicolasfara/pulverization-crowd/commit/da466a229fd076cde22a06724a3611aa70da3d92))
+* **deps:** update dependency androidx.appcompat:appcompat to v1.4.2 ([c7d96ba](https://github.com/nicolasfara/pulverization-crowd/commit/c7d96baf1171f8c2dd193fbc03db5137d587f956))
+* **deps:** update dependency androidx.appcompat:appcompat to v1.6.1 ([8794a88](https://github.com/nicolasfara/pulverization-crowd/commit/8794a88ac24b8e4b92a94828a3aeaaf8fa3309fb))
+* **deps:** update dependency androidx.constraintlayout:constraintlayout to v2.1.4 ([28a2c63](https://github.com/nicolasfara/pulverization-crowd/commit/28a2c63ae5ea8c9c0a5ad86036f1f3d7e0465716))
+* **deps:** update dependency androidx.core:core-ktx to v1.9.0 ([ed2bec6](https://github.com/nicolasfara/pulverization-crowd/commit/ed2bec6150c03dd216630b4fe72f47d459bebdb2))
+* **deps:** update dependency androidx.lifecycle:lifecycle-runtime-ktx to v2.4.1 ([ac00fa4](https://github.com/nicolasfara/pulverization-crowd/commit/ac00fa4a08edef0c604bdd10d122a9d2f571173d))
+* **deps:** update dependency androidx.lifecycle:lifecycle-runtime-ktx to v2.5.1 ([ec47410](https://github.com/nicolasfara/pulverization-crowd/commit/ec47410ac029a5404eab20d049501671eb69e251))
+* **deps:** update dependency androidx.lifecycle:lifecycle-runtime-ktx to v2.6.1 ([207564d](https://github.com/nicolasfara/pulverization-crowd/commit/207564d40618469000d1b716fb14a27b3ef4a1e7))
+* **deps:** update dependency com.google.android.material:material to v1.8.0 ([b9c2dc1](https://github.com/nicolasfara/pulverization-crowd/commit/b9c2dc1c2900e76127de6b25b360743970995d4a))
+* **deps:** update dependency gradle to v8.0.2 ([b3de2cf](https://github.com/nicolasfara/pulverization-crowd/commit/b3de2cf9c96e8f43e9321f8e84a078002bb1cf77))
+* **deps:** update dependency io.insert-koin:koin-core to v3.3.3 ([06e1572](https://github.com/nicolasfara/pulverization-crowd/commit/06e15723c972862ca9d8ff6be78b4d475d4a8bdf))
+* **deps:** update dependency org.altbeacon:android-beacon-library to v2.19.5 ([6317cb2](https://github.com/nicolasfara/pulverization-crowd/commit/6317cb28441dc131337c85d8ab0597ff2e8bb2f7))
+* **deps:** update dependency org.jetbrains.kotlinx:kotlinx-serialization-json to v1.5.0 ([1486ae7](https://github.com/nicolasfara/pulverization-crowd/commit/1486ae76294a9cea0e4e5e91634edc94496bad9b))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.17 ([6f00963](https://github.com/nicolasfara/pulverization-crowd/commit/6f00963b6258ce1745b8719e5da47b824f60fb74))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.19 ([6ab0a9f](https://github.com/nicolasfara/pulverization-crowd/commit/6ab0a9f6e1d6af2f497824616d21e82b6f176ef0))
+* **deps:** update kotest to v5.5.5 ([b78d391](https://github.com/nicolasfara/pulverization-crowd/commit/b78d391343a8eeaf53ec9274fa1468be085355ce))
+* **deps:** update node.js to 18.15 ([0bb6608](https://github.com/nicolasfara/pulverization-crowd/commit/0bb66085593d7386aaa5abb1b90195666a0175cb))
+* **deps:** update plugin com.gradle.enterprise to v3.12.4 ([f163f02](https://github.com/nicolasfara/pulverization-crowd/commit/f163f02c7a79a0c7d8fc6f79f993873afde39966))
+* **deps:** update plugin com.gradle.enterprise to v3.12.5 ([051607d](https://github.com/nicolasfara/pulverization-crowd/commit/051607d1ab218e1be920d78e6fccd0645f5f3718))
+* **deps:** update plugin gitsemver to v1.1.4 ([b62a502](https://github.com/nicolasfara/pulverization-crowd/commit/b62a50259bacc46a5672febe392e7e91bd08b62d))
+* **deps:** update plugin kotlin-qa to v0.29.2 ([92da29b](https://github.com/nicolasfara/pulverization-crowd/commit/92da29bd778c075db9774c464dd78b3156333cd8))
+* **deps:** update plugin kotlin-qa to v0.36.1 ([a3c3dcc](https://github.com/nicolasfara/pulverization-crowd/commit/a3c3dccfd634eb1f8858943f99e62a6fef1af160))
+* **deps:** update plugin multijvmtesting to v0.4.18 ([10c0680](https://github.com/nicolasfara/pulverization-crowd/commit/10c0680ed8c363b7f3c175a67bf6e2c952c8f536))
+* **deps:** update plugin multijvmtesting to v0.4.19 ([283ee2f](https://github.com/nicolasfara/pulverization-crowd/commit/283ee2f7137c3563d95417355f736e1f89b995b9))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v1.1.5 ([ad3e4bd](https://github.com/nicolasfara/pulverization-crowd/commit/ad3e4bdba4edd7d2911ddcb47bf2b69b7b2859b6))
+* **deps:** update plugin publishoncentral to v3.3.2 ([f224552](https://github.com/nicolasfara/pulverization-crowd/commit/f224552471ef7da101af73fb286b4ff77c981e66))
+* **deps:** update plugin publishoncentral to v3.3.3 ([9b24b26](https://github.com/nicolasfara/pulverization-crowd/commit/9b24b26a9a3ee5a0b0f25da8eaf25e1e8baa821c))
+* **deps:** update plugin publishoncentral to v3.4.0 ([784b63f](https://github.com/nicolasfara/pulverization-crowd/commit/784b63fe212e983dc33952cbd13723aaef42b945))
+* **deps:** update pulverization to v0.4.11 ([b2fdeeb](https://github.com/nicolasfara/pulverization-crowd/commit/b2fdeebdb8f5a5416305a81be66f28b648a7b026))
+* **deps:** update pulverization to v0.4.13 ([5150e20](https://github.com/nicolasfara/pulverization-crowd/commit/5150e20674d9517d3604c9f0450ac1e56b78708e))
+
+
+### Build and continuous integration
+
+* **deps:** update actions/checkout action to v3.4.0 ([34e387e](https://github.com/nicolasfara/pulverization-crowd/commit/34e387e4baacf5537f12597358c3d3b0d0fc0a81))
+* **deps:** update danysk/action-checkout action to v0.2.6 ([2c48246](https://github.com/nicolasfara/pulverization-crowd/commit/2c482464cc7ce800b9f7b2245232e7eca8a21be7))
+* drop repository when no release will be triggered ([559cb53](https://github.com/nicolasfara/pulverization-crowd/commit/559cb53a6a3da6af83de943ee4b07870bd12e540))
+* fix jobs dependencies ([53deb88](https://github.com/nicolasfara/pulverization-crowd/commit/53deb88a7a24f1da8898f2973263314ca763683a))
+* update build-deploy action ([a8c8e58](https://github.com/nicolasfara/pulverization-crowd/commit/a8c8e58f39a0e436580bd6f31c1ef3b9010b8e64))
+
+
+### General maintenance
+
+* add filter ([500e208](https://github.com/nicolasfara/pulverization-crowd/commit/500e208a559e0804fd627d00074255dd342b2ea7))
+* **app:** setup bluetooth communication ([30df65c](https://github.com/nicolasfara/pulverization-crowd/commit/30df65cca84c81c6f244a4934e40f14b547c1724))
+* **build:** project setup ([1bee8fe](https://github.com/nicolasfara/pulverization-crowd/commit/1bee8fe335c5717850ccf2e4916fe246819312a7))
+* fix group name ([a741da0](https://github.com/nicolasfara/pulverization-crowd/commit/a741da02a462572cd10f6b61733ebb2d91e701bf))
+* fix rssi and distance ([a8fd2dc](https://github.com/nicolasfara/pulverization-crowd/commit/a8fd2dc26bb0196892bef4fc5f3ef7cd11682595))
+* **mergify:** disable auto-rebase ([1fef0e9](https://github.com/nicolasfara/pulverization-crowd/commit/1fef0e90bff04515e00b1640263f31d2d2eebbf5))
+* project fix and setup ([90ed7ae](https://github.com/nicolasfara/pulverization-crowd/commit/90ed7ae5058cf7805181ab8d41b1e6ecfdfc9ea1))
+* **project:** setup pulverized components ([3f009e2](https://github.com/nicolasfara/pulverization-crowd/commit/3f009e2fdca470fe044a0635ade7f8490be6df74))
+* refactor project structure ([56e67eb](https://github.com/nicolasfara/pulverization-crowd/commit/56e67ebbe1be783257e56b83b3643d46e808d980))
+* setup deployment units ([05fd55e](https://github.com/nicolasfara/pulverization-crowd/commit/05fd55e11cd9d20983f640631c72dab390af4374))
+* some stuff ([9ba05af](https://github.com/nicolasfara/pulverization-crowd/commit/9ba05af1e4c733625822d04bfe793b6b571bbfbb))
+* something works ([66b10a0](https://github.com/nicolasfara/pulverization-crowd/commit/66b10a0761df37fea301b264c2bcf1b720ea76b1))
+* use my config of renovate ([1706dff](https://github.com/nicolasfara/pulverization-crowd/commit/1706dff5d1aed8977f050cc641a9281fdaea8863))
+
 ## [0.1.8](https://github.com/DanySK/Template-for-Kotlin-Multiplatform-Projects/compare/0.1.7...0.1.8) (2023-02-05)
 
 
