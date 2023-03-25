@@ -25,7 +25,7 @@ material = { module = "com.google.android.material:material", version = "1.8.0" 
 pulverization-core = { module = "it.nicolasfarabegoli.pulverization-framework:core", version.ref = "pulverization" }
 pulverization-platform = { module = "it.nicolasfarabegoli.pulverization-framework:platform", version.ref = "pulverization" }
 pulverization-rabbitmq = { module = "it.nicolasfarabegoli.pulverization-framework:rabbitmq-platform", version.ref = "pulverization" }
-koin-core = { module = "io.insert-koin:koin-core", version = "3.3.3" }
+koin-core = { module = "io.insert-koin:koin-core", version = "3.4.0" }
 beacon = { module = "org.altbeacon:android-beacon-library", version = "2.19.5" }
 
 [bundles]
