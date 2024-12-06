@@ -17,7 +17,7 @@ coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ver
 coroutine-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutine" }
 coroutine-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "coroutine" }
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.0" }
-androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.10.1" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.15.0" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.0" }
 androidx-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.8.7" }
 androidx-containtlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
