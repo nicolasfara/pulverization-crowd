@@ -2,7 +2,7 @@
 android-plugins = "7.0.0"
 kotest = "5.9.1"
 kotlin = "1.9.25"
-coroutine = "1.7.3"
+coroutine = "1.9.0"
 pulverization = "0.6.1"
 
 [libraries]
