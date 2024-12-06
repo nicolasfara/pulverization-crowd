@@ -1,7 +1,7 @@
 [versions]
 android-plugins = "7.0.0"
 kotest = "5.6.2"
-kotlin = "1.9.22"
+kotlin = "1.9.25"
 coroutine = "1.7.3"
 pulverization = "0.6.1"
 
