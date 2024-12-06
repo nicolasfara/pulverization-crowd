@@ -12,7 +12,7 @@ plugins {
     alias(libs.plugins.publishOnCentral)
     alias(libs.plugins.taskTree)
     id("com.android.application") version "8.0.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.10" apply false
+    id("org.jetbrains.kotlin.android") version "1.8.22" apply false
 }
 
 val Provider<PluginDependency>.id get() = get().pluginId
